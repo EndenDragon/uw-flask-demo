@@ -13,6 +13,12 @@ PIP_PACKAGES_DIR = "./pypackages" ### CHANGE THIS!
 import sys
 sys.path.insert(0, PIP_PACKAGES_DIR)
 
+## Sets the directory so urls all match up. 
+# Auto-generated urls using url_for() method would correctly remove application.cgi from
+# the path. Flask reads SCRIPT_NAME environment variable to determine how to build urls.
+import os
+os.environ['SCRIPT_NAME'] = os.environ['SCRIPT_NAME'][:-1 * len(os.path.basename(__file__))]
+
 ## Import your Flask site
 # Change this line to point to the Flask's app object.
 # from flaskapp import app -> means read flaskapp.py
