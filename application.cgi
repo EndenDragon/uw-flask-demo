@@ -19,17 +19,25 @@ sys.path.insert(0, PIP_PACKAGES_DIR)
 import os
 os.environ['SCRIPT_NAME'] = os.environ['SCRIPT_NAME'][:-1 * len(os.path.basename(__file__))]
 
-## Import your Flask site
-# Change this line to point to the Flask's app object.
-# from flaskapp import app -> means read flaskapp.py
-# and get the app object.
-from flaskapp import app ### CHANGE THIS!
+## cgitb handles displaying tracebacks if your app encounters any issues.
+import cgitb
+cgitb.enable(format="text")
+try:
+    ## Import your Flask site
+    # Change this line to point to the Flask's app object.
+    # from flaskapp import app -> means read flaskapp.py
+    # and get the app object.
+    from flaskapp import app ### CHANGE THIS!
 
-## Import CGIHandler object that will run your Flask site.
-## Flask is written so that it follows Python Web Server
-## Gateway Interface (WSGI). Because of this, many server
-## software that can interpret Python may run any Flask site.
-## Python's built in wsgiref package allow running WSGI web applications
-## in a CGI environment. (i.e. UW student web publishing can run CGI scripts)
-from wsgiref.handlers import CGIHandler
-CGIHandler().run(app)
+    ## Import CGIHandler object that will run your Flask site.
+    ## Flask is written so that it follows Python Web Server
+    ## Gateway Interface (WSGI). Because of this, many server
+    ## software that can interpret Python may run any Flask site.
+    ## Python's built in wsgiref package allow running WSGI web applications
+    ## in a CGI environment. (i.e. UW student web publishing can run CGI scripts)
+    from wsgiref.handlers import CGIHandler
+    CGIHandler().run(app)
+except:
+    ## Handle any error when importing Flask app in a useful traceback.
+    print("Status: 500 Internal Server Error\n")
+    print(cgitb.text(sys.exc_info()))
